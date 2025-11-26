@@ -8,6 +8,14 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        serif: ['var(--font-cinzel)', 'serif'],
+        sans: ['var(--font-inter)', 'sans-serif'],
+      },
+      colors: {
+        background: "#050505",
+        "border-dim": "rgba(255, 255, 255, 0.1)",
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

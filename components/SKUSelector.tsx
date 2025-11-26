@@ -17,19 +17,31 @@ type Props = {
 
 export default function SKUSelector({ skus, currentSkuId, onSelect }: Props) {
   return (
-    <div className="flex gap-4 p-4 bg-white/10 backdrop-blur-md rounded-xl absolute bottom-8 left-1/2 -translate-x-1/2">
+    <div className="flex gap-6 p-4 bg-white/5 backdrop-blur-xl rounded-full border border-white/10 shadow-2xl">
       {skus.map((sku) => (
         <button
           key={sku.skuId}
           onClick={() => onSelect(sku.skuId)}
-          className={`w-12 h-12 rounded-full border-2 transition-transform hover:scale-110 ${
+          className={`group relative w-10 h-10 rounded-full transition-all duration-300 ${
             currentSkuId === sku.skuId
-              ? 'border-white scale-110 shadow-lg'
-              : 'border-transparent'
+              ? 'scale-110'
+              : 'hover:scale-110 opacity-70 hover:opacity-100'
           }`}
-          style={{ backgroundColor: sku.colorHex }}
           title={sku.fabricName}
-        />
+        >
+          {/* Ring Border */}
+          <div className={`absolute -inset-1 rounded-full border transition-all duration-300 ${
+            currentSkuId === sku.skuId
+              ? 'border-white opacity-100'
+              : 'border-white/30 opacity-0 group-hover:opacity-100 group-hover:scale-110'
+          }`} />
+          
+          {/* Color Fill */}
+          <div 
+            className="w-full h-full rounded-full shadow-inner"
+            style={{ backgroundColor: sku.colorHex }}
+          />
+        </button>
       ))}
     </div>
   )
