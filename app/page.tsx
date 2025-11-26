@@ -1,16 +1,21 @@
-import Link from 'next/link'
+import ProductPageClient from '@/components/ProductPageClient'
+
+const LOCAL_MANIFEST = {
+  modelId: 'Museum_Collection',
+  rotationFrames: 14,
+  frameWidth: 1024,
+  frameHeight: 1400,
+  skus: [
+    {
+      skuId: 'LOCAL_SKU_1',
+      fabricName: 'Royal Velvet',
+      colorHex: '#1a1a1a',
+      framesPath: '/costum',
+    }
+  ],
+  availableSizes: ['M']
+}
 
 export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24">
-      <h1 className="text-4xl font-bold mb-8">3D Mannequin Demo</h1>
-      <p className="mb-8 text-xl">Select a model to view:</p>
-      <Link 
-        href="/models/SLIM_FIT" 
-        className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-      >
-        View Slim Fit Model
-      </Link>
-    </main>
-  )
+  return <ProductPageClient manifest={LOCAL_MANIFEST} />
 }
