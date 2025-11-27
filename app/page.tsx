@@ -2,7 +2,7 @@ import ProductPageClient from '@/components/ProductPageClient'
 
 const LOCAL_MANIFEST = {
   modelId: 'Museum_Collection',
-  rotationFrames: 14,
+  rotationFrames: 13,
   frameWidth: 1024,
   frameHeight: 1400,
   skus: [
