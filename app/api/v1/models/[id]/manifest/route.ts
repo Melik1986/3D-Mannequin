@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server'
 
 export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
+  _request: Request,
+  props: { params: Promise<{ id: string }> }
 ) {
+  const params = await props.params
   const id = params.id
 
   // Mock data for the single available costume (migrated from NestJS)

@@ -47,9 +47,9 @@ export default function ProductPageClient({ manifest }: Props) {
       </header>
 
       {/* Main Content */}
-      <div className="relative z-10 w-full h-full flex items-center justify-center">
+      <div className="relative z-10 w-full h-full flex items-center justify-center p-4">
         {currentSku && (
-          <div className="relative filter drop-shadow-[0_0_50px_rgba(255,255,255,0.05)]">
+          <div className="relative w-full max-w-4xl h-[60vh] md:h-[80vh] flex items-center justify-center filter drop-shadow-[0_0_50px_rgba(255,255,255,0.05)] transition-all duration-300">
             <MannequinViewer
               framesPath={currentSku.framesPath}
               spriteSheetUrl={currentSku.spriteSheetUrl}

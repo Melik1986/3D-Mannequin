@@ -24,10 +24,10 @@ export default function MannequinViewer(props: Props) {
     if (!div) return
 
     const app = new PIXI.Application({
-      width: props.frameWidth,
-      height: props.frameHeight,
+      resizeTo: div,
       backgroundAlpha: 0,
-      resolution: window.devicePixelRatio || 1
+      resolution: Math.min(window.devicePixelRatio || 1, 2),
+      autoDensity: true
     })
     appRef.current = app
     div.appendChild(app.view as unknown as Node)
@@ -36,6 +36,37 @@ export default function MannequinViewer(props: Props) {
       app.destroy(true)
       appRef.current = null
     }
+  }, [])
+
+  // Handle Resize
+  useEffect(() => {
+    const app = appRef.current
+    if (!app) return
+
+    const resizeSprite = () => {
+      if (!spriteRef.current) return
+      const { width, height } = app.screen
+      const sprite = spriteRef.current
+      
+      const scale = Math.min(
+        width / props.frameWidth,
+        height / props.frameHeight
+      ) * 0.65 // Add padding to prevent cutting off
+
+      
+      sprite.scale.set(scale)
+      sprite.x = width / 2
+      sprite.y = height / 2
+    }
+
+    app.renderer.on('resize', resizeSprite)
+    resizeSprite() // Initial sizing
+
+    return () => {
+      if (app.renderer) {
+        app.renderer.off('resize', resizeSprite)
+      }
+    }
   }, [props.frameWidth, props.frameHeight])
 
   // Load Frames
@@ -43,9 +74,7 @@ export default function MannequinViewer(props: Props) {
     const app = appRef.current
     if (!app || !props.framesPath) return
 
-    const loadFrames = async () => {
-      const frames: (PIXI.Texture | null)[] = []
-
+    const loadFrame = async (index: number) => {
       // Helper to try loading multiple naming conventions
       const tryLoad = async (url: string) => {
         try {
@@ -55,43 +84,58 @@ export default function MannequinViewer(props: Props) {
         }
       }
 
-      for (let i = 0; i < props.rotationFrames; i++) {
-        // Handle the mixed naming convention: cadr-X vs card-X
-        // Also handle the case where i might be 0-13
-        const candidates = [
-          `${props.framesPath}/cadr-${i}.png`,
-          `${props.framesPath}/card-${i}.png`,
-          `${props.framesPath}/frame-${i}.png` // Future proofing
-        ]
+      const candidates = [
+        `${props.framesPath}/frame-${index}.png`,
+        `${props.framesPath}/cadr-${index}.png`,
+        `${props.framesPath}/card-${index}.png`
+      ]
 
-        let loaded: PIXI.Texture | null = null
-        for (const u of candidates) {
-          const tex = await tryLoad(u)
-          if (tex) {
-            loaded = tex
-            break
-          }
+      let loaded: PIXI.Texture | null = null
+      for (const u of candidates) {
+        const tex = await tryLoad(u)
+        if (tex) {
+          loaded = tex
+          break
         }
-        frames.push(loaded)
       }
 
-      frameTexturesRef.current = frames
+      if (loaded) {
+        frameTexturesRef.current[index] = loaded
 
-      // Set initial frame
-      if (frames[0] && !spriteRef.current) {
-        const sprite = new PIXI.Sprite(frames[0])
-        sprite.anchor.set(0.5) // Center anchor
-        sprite.x = props.frameWidth / 2
-        sprite.y = props.frameHeight / 2
-        spriteRef.current = sprite
-        app.stage.addChild(sprite)
-      } else if (frames[0] && spriteRef.current) {
-        spriteRef.current.texture = frames[0]
+        // If this is the first frame, initialize the sprite immediately
+        if (index === 0) {
+          if (!spriteRef.current) {
+            const sprite = new PIXI.Sprite(loaded)
+            sprite.anchor.set(0.5)
+            spriteRef.current = sprite
+            app.stage.addChild(sprite)
+            // Trigger resize to position correctly
+            app.renderer.emit('resize', app.screen.width, app.screen.height)
+          } else {
+            spriteRef.current.texture = loaded
+          }
+        }
       }
     }
 
-    void loadFrames()
-  }, [props.framesPath, props.rotationFrames, props.frameWidth, props.frameHeight])
+    const loadAll = async () => {
+      // Initialize array
+      frameTexturesRef.current = new Array(props.rotationFrames).fill(null)
+
+      // 1. Load first frame ASAP (Priority)
+      await loadFrame(0)
+
+      // 2. Load the rest in background
+      // We can load them in parallel batches to avoid freezing
+      const promises = []
+      for (let i = 1; i < props.rotationFrames; i++) {
+        promises.push(loadFrame(i))
+      }
+      await Promise.all(promises)
+    }
+
+    void loadAll()
+  }, [props.framesPath, props.rotationFrames])
 
   // Initialize RotationService
   useEffect(() => {
@@ -117,8 +161,7 @@ export default function MannequinViewer(props: Props) {
   return (
     <div
       ref={containerRef}
-      className="cursor-grab active:cursor-grabbing touch-none"
-      style={{ width: props.frameWidth, height: props.frameHeight }}
+      className="cursor-grab active:cursor-grabbing touch-none w-full h-full"
     />
   )
 }
