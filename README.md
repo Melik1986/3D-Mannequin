@@ -1,57 +1,57 @@
 # 3D Mannequin 2.5D Viewer
 
-Высокопроизводительный модуль для просмотра одежды в формате 360° с использованием Next.js 14+ и PixiJS. Проект реализует гибридный пайплайн с использованием заранее сгенерированных ассетов (спрайт-листов) для достижения фотореалистичного качества.
+High-performance module for 360° clothing viewing using Next.js 14+ and PixiJS. The project implements a hybrid pipeline using pre-generated assets (sprite sheets) to achieve photorealistic quality.
 
-## Особенности
+## Features
 
-- **Стек:** Next.js 16 (App Router), React 19, TypeScript, PixiJS.
-- **Производительность:** Аппаратное ускорение через WebGL (PixiJS), ленивая загрузка кадров.
-- **Дизайн:** "Museum of Ancient Art" — темная люксовая эстетика с адаптивным UI.
-- **Адаптивность:** Полная поддержка мобильных устройств и десктопов, умное масштабирование canvas.
-- **Инфраструктура:** Монолитная архитектура (API Routes + Frontend), готова к деплою на Vercel.
+- **Stack:** Next.js 16 (App Router), React 19, TypeScript, PixiJS.
+- **Performance:** Hardware acceleration via WebGL (PixiJS), lazy frame loading.
+- **Design:** "Museum of Ancient Art" — dark luxury aesthetic with adaptive UI.
+- **Responsiveness:** Full support for mobile devices and desktops, smart canvas scaling.
+- **Infrastructure:** Monolithic architecture (API Routes + Frontend), ready for deployment on Vercel.
 
-## Быстрый старт
+## Quick Start
 
-### Требования
-- Node.js 18+ или Bun 1.0+
+### Requirements
+- Node.js 18+ or Bun 1.0+
 - Git
 
-### Установка
+### Installation
 
 ```bash
-# Клонирование репозитория
+# Clone the repository
 git clone https://github.com/Melik1986/3D-Mannequin.git
 cd 3D-Mannequin
 
-# Установка зависимостей
+# Install dependencies
 bun install
-# или
+# or
 npm install
 ```
 
-### Запуск в режиме разработки
+### Development Mode
 
 ```bash
 bun dev
-# или
+# or
 npm run dev
 ```
-Приложение будет доступно по адресу `http://localhost:3000`.
+The application will be available at `http://localhost:3000`.
 
-### Сборка для продакшена
+### Production Build
 
 ```bash
 bun run build
 bun start
 ```
 
-## Структура проекта
+## Project Structure
 
-- `app/` — Next.js App Router (страницы и API).
-- `components/` — React компоненты (MannequinViewer, SKUSelector).
-- `public/` — Статические файлы (модели, спрайты).
-- `services/` — Бизнес-логика (RotationService).
+- `app/` — Next.js App Router (pages and API).
+- `components/` — React components (MannequinViewer, SKUSelector).
+- `public/` — Static files (models, sprites).
+- `services/` — Business logic (RotationService).
 
-## Лицензия
+## License
 
 MIT

@@ -1,95 +1,95 @@
-# 🚀 Развертывание (Deployment)
+# 🚀 Deployment
 
-В данном документе описан процесс развертывания проекта **3D Mannequin**. Проект построен как монолитное приложение на базе **Next.js 14+ (App Router)** и не требует отдельного бэкенд-сервера (NestJS API интегрирован в Next.js API Routes).
+This document describes the deployment process for the **3D Mannequin** project. The project is built as a monolithic application based on **Next.js 14+ (App Router)** and does not require a separate backend server (NestJS API is integrated into Next.js API Routes).
 
-## 1. Требования к системе
+## 1. System Requirements
 
-### Окружение
-- **Node.js:** версия 18.17 или выше (рекомендуется LTS).
-- **Пакетный менеджер:** Bun 1.0+ (рекомендуется) или npm/yarn/pnpm.
-- **ОС:** Linux (Ubuntu/Debian), macOS или Windows.
+### Environment
+- **Node.js:** version 18.17 or higher (LTS recommended).
+- **Package Manager:** Bun 1.0+ (recommended) or npm/yarn/pnpm.
+- **OS:** Linux (Ubuntu/Debian), macOS, or Windows.
 
-### Аппаратные требования
-- **RAM:** Минимум 1GB (для сборки).
-- **CPU:** 1 ядро (минимум).
+### Hardware Requirements
+- **RAM:** Minimum 1GB (for build).
+- **CPU:** 1 core (minimum).
 
 ---
 
-## 2. Пошаговая инструкция установки
+## 2. Step-by-Step Installation Instructions
 
-1. **Клонирование репозитория:**
+1. **Clone the repository:**
    ```bash
    git clone https://github.com/Melik1986/3D-Mannequin.git
    cd 3D-Mannequin
    ```
 
-2. **Установка зависимостей:**
-   Используйте `bun` для максимальной скорости, или `npm` как альтернативу.
+2. **Install dependencies:**
+   Use `bun` for maximum speed, or `npm` as an alternative.
    ```bash
    bun install
-   # или
+   # or
    npm install --legacy-peer-deps
    ```
 
 ---
 
-## 3. Настройка окружения
+## 3. Environment Setup
 
-Проект работает "из коробки" с локальным манифестом. Если требуется подключение к внешним сервисам, создайте файл `.env.local`:
+The project works "out of the box" with a local manifest. If connection to external services is required, create a `.env.local` file:
 
 ```bash
-# Пример (опционально)
+# Example (optional)
 NEXT_PUBLIC_API_URL=https://api.example.com
 ```
 
-Для текущей конфигурации переменные окружения **не требуются**.
+For the current configuration, environment variables are **not required**.
 
 ---
 
-## 4. Процедура запуска
+## 4. Launch Procedure
 
-### Локальная разработка
+### Local Development
 ```bash
 bun dev
-# Приложение доступно на http://localhost:3000
+# Application available at http://localhost:3000
 ```
 
-### Продакшн (Vercel - Рекомендуется)
-Это самый простой способ развертывания Next.js приложений.
+### Production (Vercel - Recommended)
+This is the easiest way to deploy Next.js applications.
 
-1. Установите [Vercel CLI](https://vercel.com/docs/cli): `npm i -g vercel`
-2. Авторизуйтесь: `vercel login`
-3. Запустите деплой:
+1. Install [Vercel CLI](https://vercel.com/docs/cli): `npm i -g vercel`
+2. Login: `vercel login`
+3. Deploy:
    ```bash
    vercel
-   # Для продакшена:
+   # For production:
    vercel --prod
    ```
 
-### Продакшн (Собственный сервер / VPS)
+### Production (Self-hosted / VPS)
 
-1. **Сборка приложения:**
+1. **Build the application:**
    ```bash
    bun run build
-   # Создает оптимизированную сборку в папке .next
+   # Creates an optimized build in the .next folder
    ```
 
-2. **Запуск сервера:**
+2. **Start the server:**
    ```bash
    bun start
-   # Запускает Node.js сервер на порту 3000
+   # Starts the Node.js server on port 3000
    ```
 
-3. **Использование Process Manager (PM2):**
-   Для стабильной работы на VPS рекомендуется использовать PM2.
+3. **Using Process Manager (PM2):**
+   For stable operation on a VPS, it is recommended to use PM2.
    ```bash
    npm install -g pm2
    pm2 start npm --name "3d-mannequin" -- start
    ```
 
-### Docker (Альтернатива)
+### Docker (Alternative)
 
-Создайте `Dockerfile` в корне проекта:
+Create a `Dockerfile` in the project root:
 
 ```dockerfile
 FROM oven/bun:1 as base
@@ -101,7 +101,7 @@ EXPOSE 3000
 CMD ["bun", "start"]
 ```
 
-Сборка и запуск:
+Build and run:
 ```bash
 docker build -t 3d-mannequin .
 docker run -p 3000:3000 3d-mannequin
@@ -109,24 +109,24 @@ docker run -p 3000:3000 3d-mannequin
 
 ---
 
-## 5. Возможные проблемы и их решения
+## 5. Troubleshooting
 
-### Ошибка: `JavaScript heap out of memory` при сборке
-**Решение:** Увеличьте лимит памяти для Node.js.
+### Error: `JavaScript heap out of memory` during build
+**Solution:** Increase the memory limit for Node.js.
 ```bash
 export NODE_OPTIONS="--max-old-space-size=4096"
 bun run build
 ```
 
-### Ошибка: 404 на статических файлах (картинки/спрайты)
-**Причина:** Неверные пути в `public` или регистр имен файлов.
-**Решение:** 
-- Убедитесь, что файлы лежат в `public/costum/`.
-- Проверьте имена файлов (например, `frame-0.png` vs `Frame-0.png`). Linux чувствителен к регистру!
+### Error: 404 on static files (images/sprites)
+**Cause:** Incorrect paths in `public` or file name case sensitivity.
+**Solution:**
+- Ensure files are located in `public/costum/`.
+- Check file names (e.g., `frame-0.png` vs `Frame-0.png`). Linux is case-sensitive!
 
-### Ошибка: PixiJS не рендерит canvas
-**Причина:** Проблема с WebGL на устройстве или SSR.
-**Решение:** Компонент `MannequinViewer` должен загружаться динамически с `ssr: false` (уже реализовано в `ProductPageClient.tsx`).
+### Error: PixiJS does not render canvas
+**Cause:** Issue with WebGL on the device or SSR.
+**Solution:** The `MannequinViewer` component must be loaded dynamically with `ssr: false` (already implemented in `ProductPageClient.tsx`).
 
-### Ошибка зависимостей при `npm install`
-**Решение:** Используйте флаг `--legacy-peer-deps` или перейдите на `bun install`.
+### Dependency error during `npm install`
+**Solution:** Use the `--legacy-peer-deps` flag or switch to `bun install`.
