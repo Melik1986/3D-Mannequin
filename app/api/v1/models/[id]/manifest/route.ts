@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { getManifest } from '@/lib/manifest'
 
 export async function GET(
   _request: Request,
@@ -6,24 +7,8 @@ export async function GET(
 ) {
   const params = await props.params
   const id = params.id
-
-  // Mock data for the single available costume (migrated from NestJS)
-  const manifest = {
-    modelId: id,
-    rotationFrames: 14,
-    frameWidth: 1024,
-    frameHeight: 1400,
-    model3dUrl: '/3d-model/costum.glb',
-    skus: [
-      {
-        skuId: 'COSTUME_1',
-        fabricName: 'Classic Suit',
-        colorHex: '#333333',
-        framesPath: '/costum' // Path relative to public folder
-      }
-    ],
-    availableSizes: ['S', 'M', 'L']
-  }
+  const manifest = await getManifest(id)
 
   return NextResponse.json(manifest)
 }
+
