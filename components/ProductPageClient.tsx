@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import dynamic from 'next/dynamic'
+import Link from 'next/link'
 import SKUSelector, { SKU } from './SKUSelector'
 
 const MannequinViewer = dynamic(() => import('./MannequinViewer'), {
@@ -30,7 +31,7 @@ export default function ProductPageClient({ manifest }: Props) {
       <div className="absolute inset-0 pointer-events-none">
         {/* Radial Glow */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(50,50,50,0.4)_0%,rgba(5,5,5,1)_70%)]" />
-        
+
         {/* Grid Lines */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:100px_100px]" />
       </div>
@@ -63,12 +64,54 @@ export default function ProductPageClient({ manifest }: Props) {
 
       {/* Controls */}
       <div className="absolute bottom-12 z-20 flex flex-col items-center gap-6 w-full px-4">
-        <SKUSelector
-          skus={manifest.skus}
-          currentSkuId={currentSkuId}
-          onSelect={setCurrentSkuId}
-        />
-        
+        <div className="flex items-center gap-8">
+          <Link
+            href={`/models/${manifest.modelId}/three`}
+            className="group flex items-center justify-center w-12 h-12 rounded-full border border-white/10 bg-white/5 backdrop-blur-md hover:bg-white/10 transition-all duration-300"
+            title="Previous View"
+          >
+            <svg
+              className="w-6 h-6 text-white/60 group-hover:text-white transition-colors transform rotate-180"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </Link>
+
+          <SKUSelector
+            skus={manifest.skus}
+            currentSkuId={currentSkuId}
+            onSelect={setCurrentSkuId}
+          />
+
+          <Link
+            href={`/models/${manifest.modelId}/three`}
+            className="group flex items-center justify-center w-12 h-12 rounded-full border border-white/10 bg-white/5 backdrop-blur-md hover:bg-white/10 transition-all duration-300"
+            title="Next View"
+          >
+            <svg
+              className="w-6 h-6 text-white/60 group-hover:text-white transition-colors"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </Link>
+        </div>
+
         <p className="text-white/30 font-serif text-sm tracking-widest uppercase">
           {currentSku?.fabricName}
         </p>

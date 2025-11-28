@@ -30,14 +30,16 @@ export default function SKUSelector({ skus, currentSkuId, onSelect }: Props) {
           title={sku.fabricName}
         >
           {/* Ring Border */}
-          <div className={`absolute -inset-1 rounded-full border transition-all duration-300 ${
-            currentSkuId === sku.skuId
-              ? 'border-white opacity-100'
-              : 'border-white/30 opacity-0 group-hover:opacity-100 group-hover:scale-110'
-          }`} />
-          
+          <div
+            className={`absolute -inset-1 rounded-full border transition-all duration-300 ${
+              currentSkuId === sku.skuId
+                ? 'border-white opacity-100'
+                : 'border-white/30 opacity-0 group-hover:opacity-100 group-hover:scale-110'
+            }`}
+          />
+
           {/* Color Fill */}
-          <div 
+          <div
             className="w-full h-full rounded-full shadow-inner"
             style={{ backgroundColor: sku.colorHex }}
           />

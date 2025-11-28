@@ -13,6 +13,7 @@ export async function GET(
     rotationFrames: 14,
     frameWidth: 1024,
     frameHeight: 1400,
+    model3dUrl: '/3d-model/costum.glb',
     skus: [
       {
         skuId: 'COSTUME_1',

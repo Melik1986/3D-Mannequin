@@ -5,11 +5,13 @@ This document describes the deployment process for the **3D Mannequin** project.
 ## 1. System Requirements
 
 ### Environment
+
 - **Node.js:** version 18.17 or higher (LTS recommended).
 - **Package Manager:** Bun 1.0+ (recommended) or npm/yarn/pnpm.
 - **OS:** Linux (Ubuntu/Debian), macOS, or Windows.
 
 ### Hardware Requirements
+
 - **RAM:** Minimum 1GB (for build).
 - **CPU:** 1 core (minimum).
 
@@ -18,6 +20,7 @@ This document describes the deployment process for the **3D Mannequin** project.
 ## 2. Step-by-Step Installation Instructions
 
 1. **Clone the repository:**
+
    ```bash
    git clone https://github.com/Melik1986/3D-Mannequin.git
    cd 3D-Mannequin
@@ -49,12 +52,14 @@ For the current configuration, environment variables are **not required**.
 ## 4. Launch Procedure
 
 ### Local Development
+
 ```bash
 bun dev
 # Application available at http://localhost:3000
 ```
 
 ### Production (Vercel - Recommended)
+
 This is the easiest way to deploy Next.js applications.
 
 1. Install [Vercel CLI](https://vercel.com/docs/cli): `npm i -g vercel`
@@ -69,12 +74,14 @@ This is the easiest way to deploy Next.js applications.
 ### Production (Self-hosted / VPS)
 
 1. **Build the application:**
+
    ```bash
    bun run build
    # Creates an optimized build in the .next folder
    ```
 
 2. **Start the server:**
+
    ```bash
    bun start
    # Starts the Node.js server on port 3000
@@ -102,6 +109,7 @@ CMD ["bun", "start"]
 ```
 
 Build and run:
+
 ```bash
 docker build -t 3d-mannequin .
 docker run -p 3000:3000 3d-mannequin
@@ -112,21 +120,27 @@ docker run -p 3000:3000 3d-mannequin
 ## 5. Troubleshooting
 
 ### Error: `JavaScript heap out of memory` during build
+
 **Solution:** Increase the memory limit for Node.js.
+
 ```bash
 export NODE_OPTIONS="--max-old-space-size=4096"
 bun run build
 ```
 
 ### Error: 404 on static files (images/sprites)
+
 **Cause:** Incorrect paths in `public` or file name case sensitivity.
 **Solution:**
+
 - Ensure files are located in `public/costum/`.
 - Check file names (e.g., `frame-0.png` vs `Frame-0.png`). Linux is case-sensitive!
 
 ### Error: PixiJS does not render canvas
+
 **Cause:** Issue with WebGL on the device or SSR.
 **Solution:** The `MannequinViewer` component must be loaded dynamically with `ssr: false` (already implemented in `ProductPageClient.tsx`).
 
 ### Dependency error during `npm install`
+
 **Solution:** Use the `--legacy-peer-deps` flag or switch to `bun install`.

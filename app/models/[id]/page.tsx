@@ -26,7 +26,8 @@ async function getManifest(id: string): Promise<Manifest> {
   return res.json()
 }
 
-export default async function Page({ params }: { params: { id: string } }) {
+export default async function Page(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params
   const manifest = await getManifest(params.id)
   return <ProductPageClient manifest={manifest} />
 }

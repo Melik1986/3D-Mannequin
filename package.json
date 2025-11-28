@@ -7,7 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write ."
   },
@@ -16,17 +16,21 @@
     "next": "^16.0.5",
     "pixi.js": "7.4.2",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "three": "^0.160.0"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.39.1",
     "@types/node": "24.10.1",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@types/three": "^0.160.0",
     "@typescript-eslint/eslint-plugin": "^8.48.0",
     "@typescript-eslint/parser": "^8.48.0",
     "autoprefixer": "^10.4.22",
-    "eslint": "^9.0.0",
-    "eslint-config-next": "^16.0.5",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "15.0.3",
     "eslint-plugin-de-morgan": "^2.0.0",
     "postcss": "^8.5.6",
     "prettier": "^3.6.2",

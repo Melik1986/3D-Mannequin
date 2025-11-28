@@ -10,7 +10,7 @@ const LOCAL_MANIFEST = {
       skuId: 'LOCAL_SKU_1',
       fabricName: 'Royal Velvet',
       colorHex: '#1a1a1a',
-      framesPath: '/costum',
+      framesPath: '/costum'
     }
   ],
   availableSizes: ['M']

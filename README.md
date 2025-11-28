@@ -13,6 +13,7 @@ High-performance module for 360° clothing viewing using Next.js 14+ and PixiJS.
 ## Quick Start
 
 ### Requirements
+
 - Node.js 18+ or Bun 1.0+
 - Git
 
@@ -36,6 +37,7 @@ bun dev
 # or
 npm run dev
 ```
+
 The application will be available at `http://localhost:3000`.
 
 ### Production Build

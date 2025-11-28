@@ -47,13 +47,10 @@ export default function MannequinViewer(props: Props) {
       if (!spriteRef.current) return
       const { width, height } = app.screen
       const sprite = spriteRef.current
-      
-      const scale = Math.min(
-        width / props.frameWidth,
-        height / props.frameHeight
-      ) * 0.65 // Add padding to prevent cutting off
 
-      
+      const scale =
+        Math.min(width / props.frameWidth, height / props.frameHeight) * 0.65 // Add padding to prevent cutting off
+
       sprite.scale.set(scale)
       sprite.x = width / 2
       sprite.y = height / 2
