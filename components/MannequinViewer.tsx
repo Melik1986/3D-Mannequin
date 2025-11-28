@@ -90,6 +90,9 @@ export default function MannequinViewer(props: Props) {
       let loaded: PIXI.Texture | null = null
       for (const u of candidates) {
         const tex = await tryLoad(u)
+        // If app is destroyed or component unmounted, stop
+        if (!appRef.current || !app.stage) return
+
         if (tex) {
           loaded = tex
           break
@@ -105,9 +108,12 @@ export default function MannequinViewer(props: Props) {
             const sprite = new PIXI.Sprite(loaded)
             sprite.anchor.set(0.5)
             spriteRef.current = sprite
-            app.stage.addChild(sprite)
-            // Trigger resize to position correctly
-            app.renderer.emit('resize', app.screen.width, app.screen.height)
+            
+            if (app.stage) {
+              app.stage.addChild(sprite)
+              // Trigger resize to position correctly
+              app.renderer.emit('resize', app.screen.width, app.screen.height)
+            }
           } else {
             spriteRef.current.texture = loaded
           }
