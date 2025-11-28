@@ -18,7 +18,11 @@ type Manifest = {
 }
 
 async function getManifest(id: string): Promise<Manifest> {
-  const base = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3000'
+  const base =
+    process.env.NEXT_PUBLIC_API_BASE_URL ||
+    (process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : 'http://localhost:3000')
   const res = await fetch(`${base}/api/v1/models/${id}/manifest`, {
     cache: 'no-store'
   })
